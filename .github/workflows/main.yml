@@ -1,40 +1,32 @@
+name: Deploy
+
 on:
   push:
-    branches:
-      - main
-
-permissions:
-  contents: read
-  pages: write
-  id-token: write
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
 
 jobs:
-  deploy:
+  build_test:
     runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: https://kylemaxmcgrath.github.io/rest-tester/
+
+    strategy:
+      matrix:
+        node-version: [12.x] 
+
     steps:
-      # Checkout project repository
-      - name: Checkout
-        uses: actions/checkout@v3
-
-      # Setup Node.js environment
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
+      - uses: actions/checkout@v2
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v2
         with:
-          node-version: '16.x'
-
-      # Install dependencies
-      - name: Install dependencies
-        run: yarn install --prefer-offline
-
-      # Build Application
-      - name: Build application
-        run: yarn build
-
-      # Deploy to Github Pages
-      - id: deploy
-        uses: bitovi/github-actions-react-to-github-pages@v1.2.2
+          node-version: ${{ matrix.node-version }}
+      - name: npm ci, build and test
+        run: |
+          npm ci
+          npm run build --if-present
+          npm test      
+      - name: deploy to gh-pages
+        uses: peaceiris/actions-gh-pages@v3
         with:
-          path: build
+          deploy_key: ${{ secrets.ACTIONS_DEPLOY_KEY }}
+          publish_dir: ./build  
