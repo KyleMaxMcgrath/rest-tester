@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Container, Grid, Box, Paper } from '@mui/material';
+import { Container, Grid, Paper } from '@mui/material';
 import AddressBar from './Components/AddressBar';
 import MethodDropdown from './Components/MethodDropdown';
 import FormatDropdown from './Components/FormatDropdown';
