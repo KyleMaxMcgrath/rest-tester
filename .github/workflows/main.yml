@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     environment:
       name: github-pages
-      url: ${{ steps.deploy.outputs.page_url }}
+      url: https://kylemaxmcgrath.github.io/rest-tester/
     steps:
       # Checkout project repository
       - name: Checkout
