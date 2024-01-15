@@ -1,33 +1,20 @@
-name: Deploy
-
-on:
-  push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
-
+name: Build and Deploy
+on: [push]
+permissions:
+  contents: write
 jobs:
-  build_test:
+  build-and-deploy:
     runs-on: ubuntu-latest
-    env:
-       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-    strategy:
-      matrix:
-        node-version: [12.x] 
-
     steps:
-      - uses: actions/checkout@v2
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v2
-        with:
-          node-version: ${{ matrix.node-version }}
-      - name: npm build
+      - name: Checkout 🛎️
+        uses: actions/checkout@v3
+
+      - name: Install and Build 
         run: |
           npm i
           npm run build
-      - name: deploy to gh-pages
-        uses: peaceiris/actions-gh-pages@v3
+
+      - name: Deploy
+        uses: JamesIves/github-pages-deploy-action@v4
         with:
-          deploy_key: ${{ GITHUB_TOKEN }}
-          publish_dir: ./build  
+          folder: build
