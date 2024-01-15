@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     environment:
       name: github-pages
-      url: kylemaxmcgrath.github.io/rest-tester/
+      url: ${{ steps.deploy.outputs.page_url }}
     steps:
       # Checkout project repository
       - name: Checkout
@@ -38,6 +38,6 @@ jobs:
         name: Deploy to Github Pages
         uses: fcodelabs/react-deploy-github-pages-action@v1.0.0
         with:
-          build_dir: dist
+          build_dir: build
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
