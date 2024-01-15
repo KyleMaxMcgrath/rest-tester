@@ -35,9 +35,6 @@ jobs:
 
       # Deploy to Github Pages
       - id: deploy
-        name: Deploy to Github Pages
-        uses: fcodelabs/react-deploy-github-pages-action@v1.0.0
+        uses: bitovi/github-actions-react-to-github-pages@v1.2.2
         with:
-          build_dir: build
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          path: build
